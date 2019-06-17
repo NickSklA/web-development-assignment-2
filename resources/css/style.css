@@ -15,6 +15,7 @@ nav {
     background: transparent;
     z-index: 1;
     transition: background-color 0.7s;
+    z-index: 5;
 }
 
 nav.scroll {
@@ -92,7 +93,6 @@ li button {
 .subheader {
     height: 420px;
     width: 100%;
-    background: #E50A14;
     padding: 150px 0px 0px 0px;
     background: url(../images/background.jpg) 50% 50% no-repeat;
     background-size: cover;
@@ -182,12 +182,23 @@ select {
     height: 460px;
     width: 100%;
     background: white;
+    transition: transform .5s;
+}
+
+.movie:hover {
+    transform: scale(1.03);
+    cursor: pointer;
+    z-index: 2;
 }
 
 .movie-cover {
     height: 100%;
     width: 100%;
     object-fit: cover;
+}
+
+.movie-info {
+    display: block;
 }
 
 
@@ -200,5 +211,9 @@ footer p {
 footer a {
     text-decoration: none;
     color: #E50A14;
+}
+
+footer a:hover {
+    color: rgb(187, 10, 19);
 }
 

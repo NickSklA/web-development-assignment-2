@@ -65,7 +65,7 @@
         
                         echo 
                         '<div class="movie">
-                            <img class="movie-cover" src="' . $row['cover_image_path'] . '">
+                            <a href="movie.php?id=' . $row['movieId'] . '"><img class="movie-cover" src="' . $row['cover_image_path'] . '"></a>
                             <div class="movie-info">
                             </div>
                         </div>';    

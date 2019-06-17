@@ -1,3 +1,35 @@
+<?php
+    require_once('mysqli_connect.php');
+
+    if (isset($_GET['id'])) {
+        $movieId = $_GET['id'];
+    }
+    else {
+        // redirect to home page
+    }
+
+    if (!empty($movieId)) {
+
+        // query movie id to get information
+        $query = "SELECT * FROM movie where movie.movieId = $movieId";
+        
+        $response = @mysqli_query($dbc, $query);
+
+        if ($response) {
+
+            while($row = mysqli_fetch_array($response)) {
+                $movieName = $row['name'];
+                $movieSummary = $row['summary'];
+                $produce_date = $row['produce_date'];
+                $movieDirector = $row['director'];
+                $duration = $row['duration'];
+                $cover_image = $row['cover_image_path'];
+                $background_image = $row['background_image_path'];
+            }
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +44,7 @@
 
     <script src="resources/js/script.js"></script>
 
-    <title>Movie Page</title>
+    <title><?php echo $movieName ?> - DSFlix</title>
 </head>
 <body>
 
@@ -32,16 +64,16 @@
         <div class="info-movie">
             <div class="row">
                 <div class="col">
-                    <h5 class="date">11 Jul 2016</h4>
+                    <h5 class="date"><?php echo $produce_date ?></h4>
                 </div>
                 <div class="col">
                     <h5 class="stars">9.1/10</h5>
                 </div>
             </div>
-            <h1 class="title">Inception</h1>
+            <h1 class="title"><?php echo $movieName ?></h1>
             <div class="row">
                 <div class="col">
-                    <h4 class="duration">2h 28min</h4>
+                    <h4 class="duration"><?php echo $duration ?></h4>
                 </div>
                 <div class="col">
                     <h4 class="category">Drama, Horror, Action</h4>
@@ -58,7 +90,7 @@
             <div class="content">
                 <div class="grid">
                     <div class="grid-col">
-                        <img class="cover-movie" src="resources/images/movie1.jpg" />
+                        <img class="cover-movie" src="<?php echo $cover_image ?>" />
                     </div>
                     <div class="grid-col">
                         <div class="row">
@@ -79,18 +111,13 @@
                                         <a class="fa fa-star"></a>
                                         <a class="fa fa-star"></a>
                                         <a class="fa fa-star"></a>
-                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h3 class="summary">
-                                A thief who steals corporate secrets through the use 
-                                of dream-sharing technology is given the inverse task 
-                                of planting an idea into the mind of a C.E.O.
-                                </h3>
+                                <h3 class="summary"><?php echo $movieSummary ?></h3>
                             </div>
                         </div>
                         <div class="row">
@@ -98,7 +125,7 @@
                                 <h3 style="margin-bottom: 5px;">Creator: </h3>
                             </div>
                             <div class="col">
-                                <h3 class="creator">Christopher Nolan</h3>
+                                <h3 class="creator"><?php echo $movieDirector ?></h3>
                             </div>
                         </div>
                         <div class="row">

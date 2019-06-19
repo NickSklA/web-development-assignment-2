@@ -6,8 +6,6 @@ h1, h4, h5 {
     position: relative;
     height: 620px;
     width: 100%;
-    background: url(../images/movie-background1.jpg) 50% 50% no-repeat;
-    background-size: cover;
 }
 
 .info-movie {

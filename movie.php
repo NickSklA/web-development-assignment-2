@@ -16,7 +16,6 @@
         $response = @mysqli_query($dbc, $query);
 
         if ($response) {
-
             while($row = mysqli_fetch_array($response)) {
                 $movieName = $row['name'];
                 $movieSummary = $row['summary'];
@@ -27,6 +26,43 @@
                 $background_image = $row['background_image_path'];
             }
         }
+
+        // get movie categories
+        $query = "SELECT category.category_name 
+                  FROM movie_has_category 
+                  INNER JOIN category ON movie_has_category.categoryId = category.categoryId 
+                  WHERE movie_has_category.movieId = $movieId";
+
+        $response = @mysqli_query($dbc, $query);
+
+        if ($response) {
+            $category = array();
+            $i = 0;
+            while($row = mysqli_fetch_array($response)) {
+                $category[$i] = $row['category_name'];
+                $i++;
+            }
+        }
+
+        // get movie cast
+        $query = "SELECT cast.fullName, cast.profil_image_path
+                  FROM movie_has_cast 
+                  INNER JOIN cast ON movie_has_cast.actorId = cast.actorId 
+                  WHERE movie_has_cast.movieId = $movieId";
+
+        $response = @mysqli_query($dbc, $query);
+
+        if ($response) {
+
+            $cast_name = array();
+            $cast_image = array();
+            $i = 0;
+            while($row = mysqli_fetch_array($response)) {
+                $cast_name[$i] = $row['fullName'];
+                $cast_image[$i] = $row['profil_image_path'];
+                $i++;
+            }
+        }   
     }
 ?>
 
@@ -43,6 +79,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="resources/js/script.js"></script>
+    
+    <style type="text/css">
+        .subheader-movie {
+            background: url(<?php echo $background_image ?>) 50% 50% no-repeat;
+            background-size: cover;
+        }
+    </style>
 
     <title><?php echo $movieName ?> - DSFlix</title>
 </head>
@@ -76,7 +119,13 @@
                     <h4 class="duration"><?php echo $duration ?></h4>
                 </div>
                 <div class="col">
-                    <h4 class="category">Drama, Horror, Action</h4>
+                    <h4 class="category">
+                    <?php
+                        for ($i = 0; $i < count($category); $i++) {
+                            echo $category[$i] . ($i+1 == count($category) ? '' : ', ');
+                        }
+                    ?>
+                    </h4>
                 </div>
                 <div class="col">
                     <h4 class="type">In Theaters</h4>
@@ -122,7 +171,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <h3 style="margin-bottom: 5px;">Creator: </h3>
+                                <h3 style="margin-bottom: 5px;">Director: </h3>
                             </div>
                             <div class="col">
                                 <h3 class="creator"><?php echo $movieDirector ?></h3>
@@ -133,7 +182,13 @@
                                 <h3 style="margin-top: 0;">Stars: </h3>
                             </div>
                             <div class="col">
-                                <h3 class="cast-stars">Leonardo DiCaprio, Joseph Gordon-Levitt</h3>
+                                <h3 class="cast-stars">
+                                <?php
+                                    for($i = 0; $i < 2; $i++) {
+                                        echo $cast_name[$i] . ($i == 1 ? '' : ', ');
+                                    }
+                                ?>
+                                </h3>
                             </div>
                         </div>
                     </div>
@@ -142,38 +197,19 @@
                 <div class="cast">
                     <h2>Cast</h2>
                     <table class="cast-table">
-                        <tr class="odd">
-                            <td class="primary_photo">
-                                <img class="cast-photo" src="resources/images/cast1.jpg" />
-                            </td>
-                            <td>
-                                <h4>Leonardo DiCaprio</h4>
-                            </td>
-                        </tr>
-                        <tr class="even">
-                            <td class="primary_photo">
-                                <img class="cast-photo" src="resources/images/cast2.jpg" />
-                            </td>
-                            <td>
-                                <h4>Joseph Gordon-Levitt</h4>
-                            </td>
-                        </tr>
-                        <tr class="even">
-                            <td class="primary_photo">
-                                <img class="cast-photo" src="resources/images/cast3.jpg" />
-                            </td>
-                            <td>
-                                <h4>Ellen Page</h4>
-                            </td>
-                        </tr>
-                        <tr class="even">
-                            <td class="primary_photo">
-                                <img class="cast-photo" src="resources/images/cast4.jpg" />
-                            </td>
-                            <td>
-                                <h4>Tom Hardy</h4>
-                            </td>
-                        </tr>
+                        <?php
+                            for ($i = 0; $i < count($cast_name); $i++) {
+                                echo 
+                                '<tr class="odd">' . 
+                                '<td class="primary_photo">' . 
+                                '<img class="cast-photo" src="' . $cast_image[$i] . '" />' . 
+                                '</td>' . 
+                                '<td>' . 
+                                '<h4>' . $cast_name[$i] . '</h4>' . 
+                                '</td>' . 
+                                '</tr>';
+                            }
+                        ?>
                     </table>
                 </div>
 

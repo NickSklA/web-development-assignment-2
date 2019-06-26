@@ -28,13 +28,15 @@
             <div class="login-container">
                 <h1>Sign In</h1>
 
-                <label for="username"><b>Username</b></label>
-                <input type="text" name="username" required>
+                <form method="POST" action="server.php">
+                    <label for="username"><b>Username</b></label>
+                    <input type="text" name="username" required>
 
-                <label for="password"><b>Password</b></label>
-                <input type="password" name="password" required>
+                    <label for="password"><b>Password</b></label>
+                    <input type="password" name="password" required>
 
-                <button class="button secondary-btn login-btn" type="submit">Sign in</button>
+                    <button class="button secondary-btn login-btn" type="submit" name="lgn_user">Sign in</button>
+                </form>
             </div>
         </div>
     </div>

@@ -1,11 +1,22 @@
 <?php
+    session_start(); 
+    
+    if (!isset($_SESSION['username'])) {
+        $loggedin = false;
+        session_destroy();
+    }
+    else {
+        $loggedin = true;
+    }
+
     require_once('mysqli_connect.php');
 
-    if (isset($_GET['id'])) {
-        $movieId = $_GET['id'];
+    if (isset($_GET['id']) && !empty($_GET['id'])) {
+        $movieId = $_GET['id'];  
     }
     else {
         // redirect to home page
+        header('Location: index.php');
     }
 
     if (!empty($movieId)) {
@@ -94,12 +105,26 @@
     <nav id="nav">
         <div class="main-header">
             <a href="index.php"><img class="nav-logo" src="resources/images/logo.png"></a>
-            <div class="nav-login">
-                <ul>
-                    <li><button class="button primary-btn">Sign In</button></li>
-                    <li><button class="button secondary-btn">Sign Up</button></li>
-                </ul>
-            </div>
+                <?php
+                    if (isset($_SESSION['fullname'])) {
+                        echo
+                        '<div class="nav-user">' . 
+                            '<h3 class="fullname">' . $_SESSION['fullname'] . '</h3>' . 
+                            '<div id="logout">' . 
+                                '<h4 style="color: white;" onclick='."'window.location.href=".'"logout.php"'."'>Logout</h4>" . 
+                            '</div>' . 
+                        '</div>';
+                    }
+                    else if (!isset($_SESSION['fullname'])) {
+                        echo
+                        '<div class="nav-login">' . 
+                            '<ul>' .
+                                '<li><button class="button primary-btn" onclick="location.href=' . "'login.php'" . '">Sign In</button></li>' .
+                                '<li><button class="button secondary-btn" onclick="location.href=' . "'register.php'" . '">Sign Up</button></li>' .
+                            '</ul>' . 
+                        '</div>';
+                    }
+                ?>
         </div>
     </nav>
 
@@ -201,12 +226,12 @@
                             for ($i = 0; $i < count($cast_name); $i++) {
                                 echo 
                                 '<tr class="odd">' . 
-                                '<td class="primary_photo">' . 
-                                '<img class="cast-photo" src="' . $cast_image[$i] . '" />' . 
-                                '</td>' . 
-                                '<td>' . 
-                                '<h4>' . $cast_name[$i] . '</h4>' . 
-                                '</td>' . 
+                                    '<td class="primary_photo">' . 
+                                        '<img class="cast-photo" src="' . $cast_image[$i] . '" />' . 
+                                    '</td>' . 
+                                    '<td>' . 
+                                        '<h4>' . $cast_name[$i] . '</h4>' . 
+                                    '</td>' . 
                                 '</tr>';
                             }
                         ?>
@@ -215,46 +240,67 @@
 
                 <div class="comment-section">
                     <h2>Comments</h2>
-                    <div class="add-comment">
-                        <textarea placeholder="Your Comment" rows="5" name="comment" form="commentform"></textarea> 
-                    </div>
+                    
+                    <?php
+                        if (!$loggedin) { ?>
+                            <div class="add-comment">
+                                <input type="hidden" name="movieId" value="<?php echo $movieId ?>" />
+                                <textarea class="comment-field" rows="5" name="comment"
+                                          placeholder="Login to comment this movie" disabled></textarea>
+                            </div>
+                    <?php 
+                        } else if ($loggedin) {
+                            require_once('mysqli_connect.php');
+
+                            // check for user's comment
+                            $query = "SELECT * FROM comment WHERE userId=" . "'" . $_SESSION['userId'] . "' AND " . "movieId='$movieId'";
+                            
+                            $results = mysqli_query($dbc, $query);
+                            $userComment = mysqli_fetch_assoc($results);
+
+                            if (!$userComment) { ?> 
+                                <div class="add-comment">
+                                    <form method="POST" action="server.php">
+                                        <input type="hidden" name="movieId" value="<?php echo $movieId ?>" />
+                                        <textarea class="comment-field" rows="5" name="comment"
+                                                  placeholder="Your Comment"></textarea>
+                                        <button class="primary-btn comment-btn" type="submit" name="submit_comment">Submit Comment</button>
+                                    </form>
+                                </div>
+                        <?php
+                            } ?>
+                    <?php } ?>
+
                     <div class="comment-list">
-                        <div class="comment">
-                            <div class="user-name">
-                                <h4>nikos.skl</h4>
-                            </div>
-                            <div class="user-comment">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                                    nisi ut aliquip ex ea commodo consequat.</p>
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <div class="user-name">
-                                <h4>billE</h4>
-                            </div>
-                            <div class="user-comment">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                                    nisi ut aliquip ex ea commodo consequat.</p>
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <div class="user-name">
-                                <h4>some#234</h4>
-                            </div>
-                            <div class="user-comment">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                                    nisi ut aliquip ex ea commodo consequat.</p>
-                            </div>
-                        </div>
+                    <?php
+                        require_once('mysqli_connect.php');
+
+                        $query = "SELECT * FROM comment WHERE movieId='$movieId'";
+
+                        $response = @mysqli_query($dbc, $query);
+
+                        if ($response) {
+                            while($row = mysqli_fetch_array($response)) {
+
+                                // get username 
+                                $query = "SELECT * FROM users WHERE userId=" . "'" . $row['userId'] . "'"; 
+                                $results = mysqli_query($dbc, $query);
+                                $user = mysqli_fetch_assoc($results);
+
+                                echo
+                                '<div class="comment">
+                                    <div class="user-name">
+                                        <h4>' . $user['username'] . '</h4>
+                                    </div>  
+                                    <div class="user-comment">
+                                        <p>' . $row['comment'] . '</p>
+                                    </div>  
+                                </div>';
+                            }
+                        }
+                    ?>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

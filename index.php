@@ -1,3 +1,10 @@
+<?php 
+    session_start(); 
+    
+    if (!isset($_SESSION['username'])) {
+        session_destroy();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +25,26 @@
     <nav id="nav">
         <div class="main-header">
             <a href="index.php"><img class="nav-logo" src="resources/images/logo.png"></a>
-            <div class="nav-login">
-                <ul>
-                    <li><button class="button primary-btn">Sign In</button></li>
-                    <li><button class="button secondary-btn">Sign Up</button></li>
-                </ul>
-            </div>
+                <?php
+                    if (isset($_SESSION['fullname'])) {
+                        echo
+                        '<div class="nav-user">' . 
+                            '<h3 class="fullname">' . $_SESSION['fullname'] . '</h3>' . 
+                            '<div id="logout">' . 
+                                '<h4 style="color: white;" onclick='."'window.location.href=".'"logout.php"'."'>Logout</h4>" . 
+                            '</div>' . 
+                        '</div>';
+                    }
+                    else if (!isset($_SESSION['fullname'])) {
+                        echo
+                        '<div class="nav-login">' . 
+                            '<ul>' .
+                                '<li><button class="button primary-btn" onclick="location.href=' . "'login.php'" . '">Sign In</button></li>' .
+                                '<li><button class="button secondary-btn" onclick="location.href=' . "'register.php'" . '">Sign Up</button></li>' .
+                            '</ul>' . 
+                        '</div>';
+                    }
+                ?>
         </div>
     </nav>
 
@@ -32,11 +53,21 @@
             <h1>The world's most popular and authoritative source for movie, TV and celebrity content.</h1>
             <div class="select-style">
                 <select>
-                    <option value="action">Action</option>
-                    <option value="drama">Drama</option>
-                    <option value="adventure">Adventure</option>
-                    <option value="comedy">Comedy</option>
-                    <option value="documentary">Documentary</option>
+                    <?php 
+                        require_once('mysqli_connect.php');
+
+                        // query to get all categories
+                        $query = "SELECT * FROM category";
+
+                        $response = @mysqli_query($dbc, $query);
+
+                        if ($response) {
+                            while($row = mysqli_fetch_array($response)) {
+                                echo 
+                                '<option value=' . '"' . $row['category_name'] . '">' . $row['category_name'] . '</option>';
+                            }
+                        }
+                    ?>
                 </select>
                 <a href="#" class="fa fa-search"></a>
             </div>
@@ -65,7 +96,7 @@
         
                         echo 
                         '<div class="movie">
-                            <a href="movie.php?id=' . $row['movieId'] . '"><img class="movie-cover" src="' . $row['cover_image_path'] . '"></a>
+                            <a href="movie.php?id='.$row['movieId'].'"><img class="movie-cover" src="'.$row['cover_image_path'].'"></a>
                             <div class="movie-info">
                             </div>
                         </div>';    

@@ -144,8 +144,30 @@ h1, h4, h5 {
     color: #B6C0C0;
 }
 
-.rate-this a {
-    padding: 0;
+.rate-stars {
+    float: left;
+}
+
+.rate-stars span { 
+    float: right; 
+    position: relative; 
+}
+
+.rate-stars input {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0;
+}
+
+.rate-stars label::before {
+    font-family: FontAwesome;
+    content: "\f005";
+}
+
+.rate-stars span:hover ~ span label,
+.rate-stars span:hover label {
+    color: red;
 }
 
 .fa .fa-star {
@@ -185,11 +207,16 @@ h1, h4, h5 {
     width: 100%;
 }
 
+.comment-btn {
+    float: right;
+    cursor: pointer;
+}
+
 .comment-section {
     margin-top: 30px;
 }
 
-textarea {
+.comment-field {
     resize: vertical;
     max-height: 250px;
     min-height: 40px;

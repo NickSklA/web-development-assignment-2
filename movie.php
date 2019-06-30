@@ -181,10 +181,24 @@
                                 <div class="rate-this">
                                     <h3>Rate This</h3>
                                     <div class="rate-stars">
-                                        <a class="fa fa-star"></a>
-                                        <a class="fa fa-star"></a>
-                                        <a class="fa fa-star"></a>
-                                        <a class="fa fa-star"></a>
+                                        <form method="POST" action="server.php">
+                                            <span><input type="radio" id="star8" name="rate" value="8" />
+                                            <label for="star8" title="text"></label></span>
+                                            <span><input type="radio" id="star7" name="rate" value="7" />
+                                            <label for="star7" title="text"></label></span>
+                                            <span><input type="radio" id="star6" name="rate" value="6" />
+                                            <label for="star6" title="text"></label></span>
+                                            <span><input type="radio" id="star5" name="rate" value="5" />
+                                            <label for="star5" title="text"></label></span>
+                                            <span><input type="radio" id="star4" name="rate" value="4" />
+                                            <label for="star4" title="text"></label></span>
+                                            <span><input type="radio" id="star3" name="rate" value="3" />
+                                            <label for="star3" title="text"></label></span>
+                                            <span><input type="radio" id="star2" name="rate" value="2" />
+                                            <label for="star2" title="text"></label></span>
+                                            <span><input type="radio" id="star1" name="rate" value="1" />
+                                            <label for="star1" title="text"></label></span>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

@@ -136,7 +136,9 @@ h1, h4, h5 {
     border-left: 1px solid #B6C0C0;
     margin-left: 10px;
     padding-left: 10px;
-    width: 100%;
+    position: absolute;
+    top: 57px;
+    height: 57px !important;
 }
 
 .rate-this h3 {
@@ -166,7 +168,9 @@ h1, h4, h5 {
 }
 
 .rate-stars span:hover ~ span label,
-.rate-stars span:hover label {
+.rate-stars span:hover label,
+.rate-stars span.checked label,
+.rate-stars span.checked ~ span label {
     color: red;
 }
 

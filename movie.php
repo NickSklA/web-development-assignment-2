@@ -1,12 +1,13 @@
 <?php
     session_start(); 
-    
+
+    $loggedin = "false";
     if (!isset($_SESSION['username'])) {
-        $loggedin = false;
+        $loggedin = "false";
         session_destroy();
     }
     else {
-        $loggedin = true;
+        $loggedin = "true";
     }
 
     require_once('mysqli_connect.php');
@@ -171,36 +172,46 @@
                             <div class="col">
                                 <div class="rating">
                                     <h3 class="rate">9.1</h3>
-                                    <h3 class="grey">/10</h3>
+                                    <h3 class="grey">/8</h3>
                                 </div>
                                 <div class="rate-count">
                                     <h3>1,045</h3>
                                 </div>
                             </div>
                             <div class="col rate-this">
-                                    <div>
-                                        <h3>Rate This</h3>
-                                    </div>
-                                    <div class="rate-stars">
-                                        <form id="rating-form" method="POST" action="server.php">
-                                            <span onclick="onStarClick(this)" class="span-star"><input type="radio" id="star8" name="rate" value="8" />
-                                            <label for="star8" title="text"></label></span>
-                                            <span onclick="onStarClick(this)" class="span-star"><input type="radio" id="star7" name="rate" value="7" />
-                                            <label for="star7" title="text"></label></span>
-                                            <span onclick="onStarClick(this)" class="span-star"><input type="radio" id="star6" name="rate" value="6" />
-                                            <label for="star6" title="text"></label></span>
-                                            <span onclick="onStarClick(this)" class="span-star"><input type="radio" id="star5" name="rate" value="5" />
-                                            <label for="star5" title="text"></label></span>
-                                            <span onclick="onStarClick(this)" class="span-star"><input type="radio" id="star4" name="rate" value="4" />
-                                            <label for="star4" title="text"></label></span>
-                                            <span onclick="onStarClick(this)" class="span-star"><input type="radio" id="star3" name="rate" value="3" />
-                                            <label for="star3" title="text"></label></span>
-                                            <span onclick="onStarClick(this)" class="span-star"><input type="radio" id="star2" name="rate" value="2" />
-                                            <label for="star2" title="text"></label></span>
-                                            <span onclick="onStarClick(this)" class="span-star"><input type="radio" id="star1" name="rate" value="1" />
-                                            <label for="star1" title="text"></label></span>
-                                        </form>
-                                    </div>
+                                <div>
+                                <?php
+                                    if (isset($_SESSION['fullname'])) {
+                                        echo '<h3>Rate This</h3>';
+                                    }
+                                    else if (!isset($_SESSION['fullname'])) {
+                                        echo '<h3>Login to rate this</h3>';
+                                    }
+                                ?>
+                                </div>
+                                <div class="rate-stars">
+                                    <form id="rating-form" method="POST" action="server.php">
+                                        <input type="hidden" name="movieId" value="<?php echo $movieId ?>" />
+                                        <input type="hidden" name="userId" value="<?php if (isset($_SESSION['userId'])) echo $_SESSION['userId']; ?>" />
+                                        <input type="hidden" name="submit_rate" value="submit" />
+                                        <span <?php echo 'onclick="onStarClick(this, ' . "'" . $loggedin . "'" . ')"' ?> class="span-star"><input type="radio" id="star8" name="rate" value="8" />
+                                        <label for="star8" title="text"></label></span>
+                                        <span <?php echo 'onclick="onStarClick(this, ' . "'" . $loggedin . "'" . ')"' ?> class="span-star"><input type="radio" id="star7" name="rate" value="7" />
+                                        <label for="star7" title="text"></label></span>
+                                        <span <?php echo 'onclick="onStarClick(this, ' . "'" . $loggedin . "'" . ')"' ?> class="span-star"><input type="radio" id="star6" name="rate" value="6" />
+                                        <label for="star6" title="text"></label></span>
+                                        <span <?php echo 'onclick="onStarClick(this, ' . "'" . $loggedin . "'" . ')"' ?> class="span-star"><input type="radio" id="star5" name="rate" value="5" />
+                                        <label for="star5" title="text"></label></span>
+                                        <span <?php echo 'onclick="onStarClick(this, ' . "'" . $loggedin . "'" . ')"' ?> class="span-star"><input type="radio" id="star4" name="rate" value="4" />
+                                        <label for="star4" title="text"></label></span>
+                                        <span <?php echo 'onclick="onStarClick(this, ' . "'" . $loggedin . "'" . ')"' ?> class="span-star"><input type="radio" id="star3" name="rate" value="3" />
+                                        <label for="star3" title="text"></label></span>
+                                        <span <?php echo 'onclick="onStarClick(this, ' . "'" . $loggedin . "'" . ')"' ?> class="span-star"><input type="radio" id="star2" name="rate" value="2" />
+                                        <label for="star2" title="text"></label></span>
+                                        <span <?php echo 'onclick="onStarClick(this, ' . "'" . $loggedin . "'" . ')"' ?> class="span-star"><input type="radio" id="star1" name="rate" value="1" />
+                                        <label for="star1" title="text"></label></span>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         <div class="row">

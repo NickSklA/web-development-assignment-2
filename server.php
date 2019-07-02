@@ -73,4 +73,26 @@
             header("Refresh: 1; URL = movie.php?id=$movieId");
         }    
     }
+
+    // submit rate
+    if (isset($_POST['submit_rate'])) {
+
+        // get user id
+        $userId = $_SESSION['userId'];
+
+        // get movie id
+        $movieId = mysqli_real_escape_string($dbc, $_POST['movieId']);
+
+        // get rate
+        $rate = (int)mysqli_real_escape_string($dbc, $_POST['rate']);
+
+        // insert rate to db
+        $query = "INSERT INTO rating (userId, movieId, rate) VALUES ('$userId', '$movieId', '$rate')";
+
+        // execute query
+        if (mysqli_query($dbc, $query)) {
+            // redirect to movie.php
+            header("Refresh: 1; URL = movie.php?id=$movieId");
+        }
+    }
 ?>

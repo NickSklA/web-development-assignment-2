@@ -170,7 +170,33 @@ h1, h4, h5 {
 .rate-stars span:hover ~ span label,
 .rate-stars span:hover label,
 .rate-stars span.checked label,
-.rate-stars span.checked ~ span label {
+.rate-stars span.checked ~ span label { 
+    color: red;
+}
+
+.rating-stars {
+    float: left;
+}
+
+.rating-stars span { 
+    float: right; 
+    position: relative; 
+}
+
+.rating-stars input {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0;
+}
+
+.rating-stars label::before {
+    font-family: FontAwesome;
+    content: "\f005";
+}
+
+.rating-stars span.checked label,
+.rating-stars span.checked ~ span label {
     color: red;
 }
 

@@ -84,11 +84,12 @@
             $rate = 0;
             $count = 0;
             while($row = mysqli_fetch_array($response)) {
-                $rate = $row['rate'];
+                $rate += $row['rate'];
                 $count++;
             }
             if ($count != 0) {
                 $rate = $rate / $count;
+                $rate = round($rate, 1);
             }
         }
     }

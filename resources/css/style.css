@@ -151,6 +151,10 @@ li button {
     background-size: cover;
 }
 
+.subheader.category {
+    height: 250px;
+}
+
 .container {
     color: #ffffff;
     width: 700px;

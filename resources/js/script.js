@@ -38,6 +38,13 @@ function onStarClick(span, loggedin) {
         for (const star of stars) {
             star.classList.remove('checked');
         }
-    }
-    
+    }   
+}
+
+// change category link on select
+function changeLink(option) {
+    var link = document.getElementById('searchButton');
+    var path = "category.php?id=" + option[option.selectedIndex].id;
+
+    link.setAttribute('href', path);
 }

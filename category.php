@@ -4,6 +4,29 @@
     if (!isset($_SESSION['username'])) {
         session_destroy();
     }
+
+    require_once('mysqli_connect.php');
+
+    if (isset($_GET['id']) && !empty($_GET['id'])) {
+        $categoryId = $_GET['id'];  
+    }
+    else {
+        // redirect to home page
+        header('Location: index.php');
+    }
+
+    if (!empty($categoryId)) {
+
+        $query = "SELECT category_name FROM category WHERE categoryId = $categoryId";
+
+        $response = @mysqli_query($dbc, $query);
+
+        if ($response) {
+            $category = mysqli_fetch_assoc($response);
+
+            $categoryName = $category['category_name'];
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +41,7 @@
 
     <script src="resources/js/script.js"></script>
 
-    <title>Home Page</title>
+    <title>Category - <?php echo $categoryName ?></title>
 </head>
 <body>
 
@@ -48,29 +71,9 @@
         </div>
     </nav>
 
-    <div class="subheader">
+    <div class="subheader category">
         <div class="container">
-            <h1>The world's most popular and authoritative source for movie, TV and celebrity content.</h1>
-            <div class="select-style">
-                <select onclick="changeLink(this)">
-                    <?php 
-                        require_once('mysqli_connect.php');
-
-                        // query to get all categories
-                        $query = "SELECT * FROM category";
-
-                        $response = @mysqli_query($dbc, $query);
-
-                        if ($response) {
-                            while($row = mysqli_fetch_array($response)) {
-                                echo 
-                                '<option id=' . '"' . $row['categoryId'] . '"'  . 'value=' . '"' . $row['category_name'] . '">' . $row['category_name'] . '</option>';
-                            }
-                        }
-                    ?>
-                </select>
-                <a href="category.php?id=1" id="searchButton" class="fa fa-search"></a>
-            </div>
+            <h1><?php echo $categoryName ?></h1>
         </div>
     </div>
 
@@ -80,7 +83,11 @@
             <?php
                 require_once('mysqli_connect.php');
         
-                $query = "SELECT * FROM movie";
+                $query = 
+                "SELECT movie.*
+                FROM movie_has_category, movie 
+                WHERE movie_has_category.categoryId = $categoryId
+                AND movie.movieId = movie_has_category.movieId";
         
                 $response = @mysqli_query($dbc, $query);
         
@@ -99,43 +106,10 @@
                             <a href="movie.php?id='.$row['movieId'].'"><img class="movie-cover" src="'.$row['cover_image_path'].'"></a>
                             <div class="movie-info">
                             </div>
-                        </div>';    
+                        </div>';
                     }
                 }
             ?>
-
-                <!-- <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie1.jpg">
-                    <div class="movie-info">
-                    </div>
-                </div> -->
-                <!-- <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie2.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie3.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie4.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie5.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie6.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie7.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie8.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie9.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie10.jpg">
-                </div> -->
             </div>
         </div>
     </div>

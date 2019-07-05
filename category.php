@@ -84,10 +84,12 @@
                 require_once('mysqli_connect.php');
         
                 $query = 
-                "SELECT movie.*
-                FROM movie_has_category, movie 
-                WHERE movie_has_category.categoryId = $categoryId
-                AND movie.movieId = movie_has_category.movieId";
+                "SELECT movie.* , ROUND(AVG(rate), 1) as rate
+                FROM movie_has_category, movie, rating 
+                WHERE movie_has_category.categoryId = $categoryId 
+                AND movie.movieId = movie_has_category.movieId 
+                AND movie.movieId = rating.movieId 
+                GROUP BY movie.movieId";
         
                 $response = @mysqli_query($dbc, $query);
         
@@ -102,10 +104,16 @@
                     while($row = mysqli_fetch_array($response)) {
         
                         echo 
-                        '<div class="movie">
-                            <a href="movie.php?id='.$row['movieId'].'"><img class="movie-cover" src="'.$row['cover_image_path'].'"></a>
+                        '<div class="movie-category">
                             <div class="movie-info">
+                                <div class="movie-details">
+                                    <h1>' . $row['name'] . '</h1>
+                                    <p>' . $row['summary'] . '</p>
+                                    <h3>' . $row['rate'] . '/8</h3>
+                                    <button class="button secondary-btn" onclick="location.href=movie.php?id=' . $row['movieId']  . '">See more</button>
+                                </div>
                             </div>
+                            <a href="movie.php?id='.$row['movieId'].'"><img class="movie-cover" src="'.$row['cover_image_path'].'"></a>
                         </div>';
                     }
                 }

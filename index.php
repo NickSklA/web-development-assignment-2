@@ -97,45 +97,10 @@
                         echo 
                         '<div class="movie">
                             <a href="movie.php?id='.$row['movieId'].'"><img class="movie-cover" src="'.$row['cover_image_path'].'"></a>
-                            <div class="movie-info">
-                            </div>
                         </div>';    
                     }
                 }
             ?>
-
-                <!-- <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie1.jpg">
-                    <div class="movie-info">
-                    </div>
-                </div> -->
-                <!-- <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie2.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie3.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie4.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie5.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie6.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie7.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie8.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie9.jpg">
-                </div>
-                <div class="movie">
-                    <img class="movie-cover" src="resources/images/movie10.jpg">
-                </div> -->
             </div>
         </div>
     </div>

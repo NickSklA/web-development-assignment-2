@@ -109,11 +109,11 @@
                                 <div class="movie-details">
                                     <h1>' . $row['name'] . '</h1>
                                     <p>' . $row['summary'] . '</p>
-                                    <h3>' . $row['rate'] . '/8</h3>
-                                    <button class="button secondary-btn" onclick="location.href=movie.php?id=' . $row['movieId']  . '">See more</button>
+                                    <h3 class="stars">' . $row['rate'] . '/8</h3>
+                                    <button class="button secondary-btn" onclick='."'window.location.href=".'"movie.php?id='.$row['movieId'].'"'."'>See more</button>
                                 </div>
-                            </div>
-                            <a href="movie.php?id='.$row['movieId'].'"><img class="movie-cover" src="'.$row['cover_image_path'].'"></a>
+                            </div>" .  
+                            '<a href="movie.php?id='.$row['movieId'].'"><img class="movie-cover" src="'.$row['cover_image_path'].'"></a>
                         </div>';
                     }
                 }

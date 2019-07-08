@@ -299,6 +299,20 @@ select {
     padding: 10px;
 }
 
+.stars {
+    color: #B6C0C0;
+    position: relative;
+    padding-left: 22px;
+}
+
+.stars::before {
+    font-family: FontAwesome;
+    content: "\f005";
+    position: absolute;
+    top: 2.5px;
+    left: 0;
+}
+
 .movie-cover {
     height: 100%;
     width: 100%;

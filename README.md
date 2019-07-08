@@ -6,10 +6,13 @@ Soon on live server, for now get an idea from some gifs
 
 
 ### Home Page
-![Home Page](demo/home_page.gif)
+![Home Page](demo/home_page.png)
 
 ### Movie Page
-![Movie Page](demo/movie_page.gif)
+![Movie Page](demo/movie_page.png)
+
+### Category Page
+![Category Page](demo/category_page.gif)
 
 ### Login Page
 ![Login Page](demo/login_page.gif)
